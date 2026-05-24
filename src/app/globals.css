@@ -19,6 +19,7 @@
   --color-teal: var(--teal);
   --color-panel: var(--panel);
   --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-metal-mania);
 }
 
 body {
@@ -39,6 +40,17 @@ textarea {
   text-transform: uppercase;
   color: var(--pink);
   line-height: 1;
+}
+
+.logo-title {
+  font-family: var(--font-metal-mania), cursive;
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--pink);
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .banner-text {

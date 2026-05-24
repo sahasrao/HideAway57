@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.env
+.env.*
+*.db
+*.db-journal
+.cursor
+.tools
+README.md
+render.yaml
+prisma/dev.db

@@ -14,7 +14,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 top-0 z-30 flex h-full w-52 flex-col border-r border-[#3a3a3a] bg-[#141414] px-4 py-6">
+    <aside className="fixed left-0 top-0 z-30 flex h-full w-[302px] flex-col border-r border-[#3a3a3a] bg-[#141414] px-4 py-6">
       <Logo />
       <nav className="mt-10 flex flex-col gap-2">
         {navItems.map((item) => {

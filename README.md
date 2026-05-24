@@ -73,9 +73,25 @@ This repo includes a [Render Blueprint](https://render.com/docs/blueprint-spec) 
   `https://your-app.onrender.com/api/webhooks/stripe`
 - **Seed data:** runs automatically during `build:render` (game catalog upserted each deploy)
 
-### Render notes
+### Option C — Local Docker image (no GitHub)
 
-- Free web services **spin down** after inactivity (~50s cold start on first visit)
+Render web services need either a Git repo or a **prebuilt Docker image**. To deploy from your machine without GitHub:
+
+1. Install [Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install/)
+2. Create a [Docker Hub](https://hub.docker.com/) account and access token
+3. Run:
+
+```bash
+export RENDER_API_KEY=rnd_...
+export DOCKERHUB_USERNAME=your-dockerhub-user
+export DOCKERHUB_TOKEN=dckr_pat_...
+npm run deploy:render:docker
+```
+
+This builds the app locally, pushes the image to Docker Hub, and creates/updates an **image-backed** Render service (no Git integration). Postgres `hideaway57-db` must already exist in your Render workspace.
+
+Re-deploy after code changes: run the same command again (build → push → trigger deploy).
+
 - Game installer ZIPs are built during each deploy (`installers:build`) — no persistent disk needed
 - PostgreSQL is required; SQLite does not work on Render's ephemeral filesystem
 

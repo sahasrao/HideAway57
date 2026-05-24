@@ -3,20 +3,16 @@ import Link from "next/link";
 
 export function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2">
+    <Link href="/" className="flex min-w-0 items-center gap-3 px-1">
       <Image
-        src="/logo-mascot.png"
+        src="/logo.png"
         alt=""
-        width={36}
-        height={36}
-        className="rounded-sm object-contain"
+        width={52}
+        height={52}
+        className="h-[52px] w-[52px] shrink-0 object-contain"
+        priority
       />
-      <span
-        className="text-lg font-black uppercase tracking-wide"
-        style={{ color: "var(--pink)" }}
-      >
-        HideAway 57
-      </span>
+      <span className="logo-title shrink-0 whitespace-nowrap">HideAway 57</span>
     </Link>
   );
 }
