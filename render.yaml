@@ -28,9 +28,9 @@ services:
       - key: AUTH_TRUST_HOST
         value: "true"
       - key: AUTH_URL
-        sync: false
+        value: https://hideaway57.onrender.com
       - key: NEXTAUTH_URL
-        sync: false
+        value: https://hideaway57.onrender.com
       - key: AUTH_GOOGLE_ID
         sync: false
       - key: AUTH_GOOGLE_SECRET
