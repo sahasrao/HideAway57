@@ -47,7 +47,7 @@ export function Sidebar({
           open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div className="flex items-start justify-between gap-2">
+        <div className="flex items-center justify-between gap-3">
           <Logo />
           <button
             type="button"
