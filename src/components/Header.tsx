@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { FormEvent, useState, useEffect } from "react";
 
 export function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
@@ -51,15 +51,26 @@ export function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
         </div>
       </form>
 
-      <Link
-        href={status === "authenticated" ? "/profile" : "/login"}
-        className="flex shrink-0 items-center gap-2 rounded-md border-2 border-[var(--teal)] px-3 py-2 text-sm font-semibold text-[var(--teal)] transition-colors hover:bg-[var(--teal)]/10 sm:px-4"
-      >
-        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
-          <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z" />
-        </svg>
-        <span className="hidden sm:inline">Profile</span>
-      </Link>
+      <div className="flex shrink-0 items-center gap-2">
+        {status === "authenticated" && (
+          <button
+            type="button"
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className="hidden rounded-md border border-[#555] px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-red-400 hover:text-red-400 sm:inline-flex"
+          >
+            Log out
+          </button>
+        )}
+        <Link
+          href={status === "authenticated" ? "/profile" : "/login"}
+          className="flex items-center gap-2 rounded-md border-2 border-[var(--teal)] px-3 py-2 text-sm font-semibold text-[var(--teal)] transition-colors hover:bg-[var(--teal)]/10 sm:px-4"
+        >
+          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
+            <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z" />
+          </svg>
+          <span className="hidden sm:inline">Profile</span>
+        </Link>
+      </div>
     </header>
   );
 }
