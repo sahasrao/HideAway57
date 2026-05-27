@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { FormEvent, useEffect, useState } from "react";
 
 interface Profile {
@@ -160,6 +160,20 @@ export default function ProfilePage() {
               </Link>
             </div>
           </>
+        )}
+
+        {session && (
+          <div
+            className={`${profile ? "mt-6" : "mt-8 border-t border-[#555] pt-6"} flex flex-wrap items-center gap-3`}
+          >
+            <button
+              type="button"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="rounded border border-[#555] px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-red-400 hover:text-red-400"
+            >
+              Log out
+            </button>
+          </div>
         )}
       </div>
     </div>
