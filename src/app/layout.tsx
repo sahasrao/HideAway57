@@ -28,6 +28,10 @@ const encodeSansExpanded = Encode_Sans_Expanded({
 export const metadata: Metadata = {
   title: "HideAway 57 — Game Store",
   description: "Your marketplace for digital games. Browse, buy, and play.",
+  icons: {
+    icon: [{ url: "/logo.png", type: "image/png" }],
+    apple: [{ url: "/logo.png", type: "image/png" }],
+  },
 };
 
 export const viewport: Viewport = {
