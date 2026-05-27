@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Metal_Mania } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Encode_Sans_Expanded, Geist, Geist_Mono, Metal_Mania } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import "./globals.css";
 
@@ -19,9 +19,20 @@ const metalMania = Metal_Mania({
   subsets: ["latin"],
 });
 
+const encodeSansExpanded = Encode_Sans_Expanded({
+  variable: "--font-encode-sans",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
 export const metadata: Metadata = {
   title: "HideAway 57 — Game Store",
   description: "Your marketplace for digital games. Browse, buy, and play.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -32,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${metalMania.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${metalMania.variable} ${encodeSansExpanded.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <Providers>{children}</Providers>

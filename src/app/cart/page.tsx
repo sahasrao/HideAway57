@@ -23,10 +23,10 @@ export default function CartPage() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-start justify-between gap-6">
+      <div className="flex flex-col gap-6 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
         <h1 className="page-title">Cart</h1>
 
-        <div className="panel min-w-[220px] p-5 text-center">
+        <div className="panel w-full p-5 text-center sm:min-w-[220px] sm:w-auto">
           <p className="text-sm text-white">
             Total Items: <span className="font-bold">{itemCount}</span>
           </p>
@@ -58,11 +58,14 @@ export default function CartPage() {
         ) : (
           <ul className="space-y-6">
             {cart.map((item) => (
-              <li key={item.game.id} className="flex gap-4">
-                <Link href={`/games/${item.game.id}`} className="relative h-28 w-44 shrink-0 overflow-hidden rounded border border-[#3a3a3a]">
+              <li key={item.game.id} className="flex flex-col gap-4 sm:flex-row">
+                <Link
+                  href={`/games/${item.game.id}`}
+                  className="relative mx-auto h-36 w-full max-w-[280px] shrink-0 overflow-hidden rounded border border-[#3a3a3a] sm:mx-0 sm:h-28 sm:w-44"
+                >
                   <GameCover game={item.game} className="h-full w-full" showTitle />
                 </Link>
-                <div className="flex flex-1 flex-col justify-center">
+                <div className="flex flex-1 flex-col justify-center text-center sm:text-left">
                   <Link
                     href={`/games/${item.game.id}`}
                     className="text-lg font-bold uppercase text-white hover:text-[var(--pink)]"
@@ -75,7 +78,7 @@ export default function CartPage() {
                   <button
                     type="button"
                     onClick={() => removeFromCart(item.game.id)}
-                    className="mt-2 w-fit text-sm text-[var(--muted)] underline hover:text-white"
+                    className="mt-2 w-full text-sm text-[var(--muted)] underline hover:text-white sm:w-fit"
                   >
                     Remove
                   </button>

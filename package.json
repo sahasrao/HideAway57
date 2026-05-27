@@ -15,6 +15,7 @@
     "installers:build": "tsx scripts/build-installers.ts",
     "covers:extract": "tsx scripts/extract-game-covers.ts",
     "covers:figma": "tsx scripts/export-figma-covers.ts",
+    "cards:figma": "tsx scripts/export-figma-cards.ts",
     "logo:figma": "tsx scripts/export-figma-logo.ts",
     "deploy:render:docker": "bash scripts/deploy-render-docker.sh",
     "db:setup": "npm run installers:build && prisma migrate dev && prisma db seed"

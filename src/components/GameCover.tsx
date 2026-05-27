@@ -17,7 +17,7 @@ export function GameCover({
         alt={game.title}
         fill
         className="object-cover"
-        sizes="(max-width: 768px) 100vw, 33vw"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
       {showTitle && (
         <div className="absolute inset-0 flex items-end justify-center bg-black/30 p-3">

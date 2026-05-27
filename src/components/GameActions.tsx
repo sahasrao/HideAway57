@@ -21,7 +21,7 @@ export function GameActions({ game }: { game: Game }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <span className="text-3xl font-bold text-[var(--teal)]">
+      <span className="text-2xl font-bold text-[var(--teal)] sm:text-3xl">
         {formatPrice(game.price)}
       </span>
       <div className="flex flex-wrap gap-2">
