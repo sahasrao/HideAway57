@@ -16,7 +16,7 @@ export function GameCard({ game }: { game: Game }) {
           className="aspect-square transition-transform group-hover:scale-[1.03]"
         />
       </Link>
-      <h3 className="mt-2 text-xs font-bold uppercase tracking-wide text-white">
+      <h3 className="mt-2 text-xs font-bold uppercase tracking-wide text-white sm:text-sm">
         <Link href={`/games/${game.id}`} className="hover:text-[var(--pink)]">
           {game.title}
         </Link>

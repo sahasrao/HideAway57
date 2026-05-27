@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { Logo } from "./Logo";
 
 const navItems = [
@@ -10,34 +11,76 @@ const navItems = [
   { href: "/cart", label: "Cart", icon: CartIcon },
 ];
 
-export function Sidebar() {
+export function Sidebar({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const pathname = usePathname();
 
+  useEffect(() => {
+    onClose();
+  }, [pathname, onClose]);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
-    <aside className="fixed left-0 top-0 z-30 flex h-full w-[302px] flex-col border-r border-[#3a3a3a] bg-[#141414] px-4 py-6">
-      <Logo />
-      <nav className="mt-10 flex flex-col gap-2">
-        {navItems.map((item) => {
-          const active =
-            item.href === "/"
-              ? pathname === "/"
-              : pathname.startsWith(item.href);
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-semibold transition-colors ${
-                active ? "text-[var(--teal)]" : "text-[var(--teal)]/80 hover:text-[var(--teal)]"
-              }`}
-            >
-              <Icon />
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
-    </aside>
+    <>
+      <div
+        className={`fixed inset-0 z-30 bg-black/60 backdrop-blur-sm transition-opacity lg:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        onClick={onClose}
+        aria-hidden={!open}
+      />
+      <aside
+        className={`fixed left-0 top-0 z-40 flex h-full w-[min(302px,85vw)] flex-col border-r border-[#3a3a3a] bg-[#141414] px-4 py-6 transition-transform duration-200 ease-out lg:translate-x-0 ${
+          open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }`}
+      >
+        <div className="flex items-start justify-between gap-2">
+          <Logo />
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-md p-2 text-[var(--teal)] hover:bg-[var(--teal)]/10 lg:hidden"
+            aria-label="Close menu"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <nav className="mt-10 flex flex-col gap-2">
+          {navItems.map((item) => {
+            const active =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
+            const Icon = item.icon;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-semibold transition-colors ${
+                  active ? "text-[var(--teal)]" : "text-[var(--teal)]/80 hover:text-[var(--teal)]"
+                }`}
+              >
+                <Icon />
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }
 

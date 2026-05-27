@@ -9,7 +9,7 @@ export function Logo() {
         alt=""
         width={52}
         height={52}
-        className="h-[52px] w-[52px] shrink-0 object-contain"
+        className="h-10 w-10 shrink-0 object-contain sm:h-[52px] sm:w-[52px]"
         priority
       />
       <span className="logo-title shrink-0 whitespace-nowrap">HideAway 57</span>

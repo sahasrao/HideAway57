@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Game } from "@/types/game";
 import { GameCard } from "@/components/GameCard";
 import { FeaturedCarousel } from "@/components/FeaturedCarousel";
+import { FeaturedGameCard } from "@/components/FeaturedGameCard";
+import { FEATURED_GAME_IDS } from "@/lib/game-assets";
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -25,7 +27,18 @@ function HomeContent() {
     load();
   }, [query]);
 
-  const featured = games.find((g) => g.id === "froot-shooter") ?? games[0];
+  const featuredGames = useMemo(() => {
+    const byId = new Map(games.map((g) => [g.id, g]));
+    return FEATURED_GAME_IDS.map((id) => byId.get(id)).filter(
+      (g): g is Game => Boolean(g)
+    );
+  }, [games]);
+
+  const carouselGames = useMemo(() => {
+    const lead = featuredGames.find((g) => g.id === "froot-shooter") ?? featuredGames[0];
+    if (!lead) return featuredGames;
+    return [lead, ...featuredGames.filter((g) => g.id !== lead.id)];
+  }, [featuredGames]);
 
   return (
     <div>
@@ -35,8 +48,8 @@ function HomeContent() {
         </p>
       )}
 
-      {!query && featured && (
-        <FeaturedCarousel games={games.length ? [featured, ...games.filter((g) => g.id !== featured.id)] : []} />
+      {!query && carouselGames.length > 0 && (
+        <FeaturedCarousel games={carouselGames} />
       )}
 
       <h2 className="page-title mt-8 mb-6">
@@ -45,12 +58,22 @@ function HomeContent() {
 
       {loading ? (
         <p className="text-[var(--muted)]">Loading games...</p>
-      ) : games.length === 0 ? (
+      ) : query ? (
+        games.length === 0 ? (
+          <p className="text-[var(--muted)]">No games found.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+            {games.map((game) => (
+              <GameCard key={game.id} game={game} />
+            ))}
+          </div>
+        )
+      ) : featuredGames.length === 0 ? (
         <p className="text-[var(--muted)]">No games found.</p>
       ) : (
-        <div className="grid gap-6 grid-cols-2 md:grid-cols-3">
-          {games.map((game) => (
-            <GameCard key={game.id} game={game} />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 xl:grid-cols-3">
+          {featuredGames.map((game) => (
+            <FeaturedGameCard key={game.id} game={game} />
           ))}
         </div>
       )}

@@ -52,7 +52,7 @@ export default function GameDetailPage() {
 
         <div>
           <p className="text-sm font-bold uppercase text-[var(--pink)]">{game.genre}</p>
-          <h1 className="mt-2 text-2xl font-black uppercase text-white">{game.title}</h1>
+          <h1 className="mt-2 text-xl font-black uppercase text-white sm:text-2xl">{game.title}</h1>
           <div className="mt-6">
             <GameActions game={game} />
           </div>

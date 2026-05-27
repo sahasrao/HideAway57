@@ -59,7 +59,7 @@ export default function ProfilePage() {
     <div>
       <h1 className="page-title mb-8">Profile</h1>
 
-      <div className="panel mx-auto max-w-2xl p-8">
+      <div className="panel mx-auto max-w-2xl p-6 sm:p-8">
         <div className="flex flex-col items-center sm:flex-row sm:items-start sm:gap-6">
           <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-full bg-[var(--pink)]">
             <span className="text-5xl" aria-hidden>

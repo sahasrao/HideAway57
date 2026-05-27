@@ -14,14 +14,14 @@ export default function LibraryPage() {
       {!libraryLoaded ? (
         <p className="text-[var(--muted)]">Loading library...</p>
       ) : library.length === 0 ? (
-        <div className="panel p-12 text-center">
+        <div className="panel p-8 text-center sm:p-12">
           <p className="text-white">No games in your library yet.</p>
           <Link href="/" className="btn-teal mt-6 inline-block px-6 py-2 text-sm">
             Browse games
           </Link>
         </div>
       ) : (
-        <div className="grid gap-6 grid-cols-2 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
           {library.map((game) => (
             <article key={game.id} className="text-center">
               <Link href={`/games/${game.id}`} className="block overflow-hidden rounded border border-[#3a3a3a]">
