@@ -18,22 +18,54 @@ interface Profile {
 }
 
 export default function ProfilePage() {
-  const { data: session, update } = useSession();
+  const { data: session, status, update } = useSession();
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [profileError, setProfileError] = useState("");
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(true);
 
   useEffect(() => {
+    if (status === "loading") return;
+
+    if (status !== "authenticated") {
+      setProfile(null);
+      setLoadingProfile(false);
+      return;
+    }
+
+    let cancelled = false;
+    setLoadingProfile(true);
+    setProfileError("");
+
     fetch("/api/profile")
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.id) {
-          setProfile(data);
-          setName(data.name ?? "Player");
+      .then(async (res) => {
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error ?? "Failed to load profile");
         }
+        return data;
+      })
+      .then((data) => {
+        if (cancelled || !data.id) return;
+        setProfile(data);
+        setName(data.name ?? "Player");
+      })
+      .catch((err: Error) => {
+        if (!cancelled) {
+          setProfile(null);
+          setProfileError(err.message);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingProfile(false);
       });
-  }, []);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [status]);
 
   async function handleSave(e: FormEvent) {
     e.preventDefault();
@@ -53,7 +85,9 @@ export default function ProfilePage() {
   }
 
   const displayName =
-    profile?.name ?? session?.user?.name ?? "BluRaspberryBoi_o7";
+    profile?.name ?? session?.user?.name ?? "Player";
+  const displayEmail = profile?.email ?? session?.user?.email ?? "";
+  const isAuthenticated = status === "authenticated";
 
   return (
     <div>
@@ -97,20 +131,36 @@ export default function ProfilePage() {
                   >
                     Edit
                   </button>
-                  {session && (
-                    <button
-                      type="button"
-                      onClick={() => signOut({ callbackUrl: "/" })}
-                      className="rounded border border-[#555] px-3 py-0.5 text-xs font-semibold text-white transition-colors hover:border-red-400 hover:text-red-400"
-                    >
-                      Log out
-                    </button>
-                  )}
                 </>
               )}
             </div>
+            {displayEmail && (
+              <p className="mt-2 text-sm text-[var(--muted)]">{displayEmail}</p>
+            )}
           </div>
         </div>
+
+        {isAuthenticated && !editing && (
+          <div className="mt-6 flex flex-wrap justify-center gap-3 sm:justify-start">
+            <button
+              type="button"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="rounded border border-[#555] px-4 py-2 text-sm font-semibold text-white transition-colors hover:border-red-400 hover:text-red-400"
+            >
+              Log out
+            </button>
+          </div>
+        )}
+
+        {loadingProfile && isAuthenticated && (
+          <p className="mt-8 text-sm text-[var(--muted)]">Loading profile...</p>
+        )}
+
+        {profileError && isAuthenticated && (
+          <p className="mt-8 rounded border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300" role="alert">
+            {profileError}. Try signing out and back in.
+          </p>
+        )}
 
         {profile && (
           <>
@@ -158,7 +208,7 @@ export default function ProfilePage() {
             <div className="mt-6 h-3 overflow-hidden rounded-full bg-[#1a1a1a]">
               <div
                 className="h-full rounded-full bg-[var(--teal)]"
-                style={{ width: `${(profile.xpLevel % 100)}%` }}
+                style={{ width: `${profile.xpLevel % 100}%` }}
               />
             </div>
 

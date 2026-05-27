@@ -54,26 +54,39 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, profile }) {
       if (user?.id) {
         token.id = user.id;
-        token.sub = user.id;
-      } else if (account && token.email && !token.id) {
+      }
+
+      const email =
+        user?.email ??
+        (typeof token.email === "string" ? token.email : undefined) ??
+        (profile && typeof profile.email === "string" ? profile.email : undefined);
+
+      if (email) {
+        token.email = email;
+      }
+
+      if (!token.id && email) {
         const dbUser = await prisma.user.findUnique({
-          where: { email: token.email },
+          where: { email },
           select: { id: true },
         });
         if (dbUser) {
           token.id = dbUser.id;
-          token.sub = dbUser.id;
         }
       }
+
+      if (token.id) {
+        token.sub = token.id;
+      }
+
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        const userId = (token.id ?? token.sub) as string | undefined;
-        if (userId) session.user.id = userId;
+      if (session.user && token.id) {
+        session.user.id = token.id as string;
       }
       return session;
     },
