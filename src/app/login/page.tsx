@@ -6,14 +6,29 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormEvent, useState, Suspense } from "react";
 
+const AUTH_ERROR_MESSAGES: Record<string, string> = {
+  OAuthAccountNotLinked:
+    "This email is already registered with a password. Sign in with email and password instead.",
+  Configuration: "Sign-in is not configured correctly. Please try again later.",
+  AccessDenied:
+    "Access was denied. If the app is in testing mode, your Google account must be added as a test user.",
+  Verification: "The sign-in link is no longer valid.",
+  Default: "Sign-in failed. Please try again.",
+};
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
+  const authError = searchParams.get("error");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const oauthError = authError
+    ? AUTH_ERROR_MESSAGES[authError] ?? AUTH_ERROR_MESSAGES.Default
+    : "";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -41,6 +56,12 @@ function LoginForm() {
     <div className="mx-auto max-w-md">
       <h1 className="page-title">Sign in</h1>
       <p className="mt-2 text-sm text-[var(--muted)]">Welcome back to HideAway 57</p>
+
+      {oauthError && (
+        <p className="mt-4 rounded border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300" role="alert">
+          {oauthError}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="panel mt-8 space-y-4 p-6">
         <div>

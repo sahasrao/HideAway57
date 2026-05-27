@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { Logo } from "./Logo";
 
@@ -19,6 +20,7 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const { status } = useSession();
 
   useEffect(() => {
     onClose();
@@ -79,6 +81,18 @@ export function Sidebar({
             );
           })}
         </nav>
+        {status === "authenticated" && (
+          <div className="mt-auto border-t border-[#3a3a3a] pt-4">
+            <button
+              type="button"
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:bg-red-500/10 hover:text-red-400"
+            >
+              <LogoutIcon />
+              Log out
+            </button>
+          </div>
+        )}
       </aside>
     </>
   );
@@ -104,6 +118,14 @@ function CartIcon() {
   return (
     <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M7 18a2 2 0 100 4 2 2 0 000-4zM17 18a2 2 0 100 4 2 2 0 000-4zM5 4h-1l-1 2h14l-2 7H8L6 4H5z" />
+    </svg>
+  );
+}
+
+function LogoutIcon() {
+  return (
+    <svg className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
     </svg>
   );
 }

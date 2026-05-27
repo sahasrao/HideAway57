@@ -46,6 +46,7 @@ if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  secret: process.env.AUTH_SECRET,
   trustHost: true,
   providers,
   session: { strategy: "jwt" },
@@ -53,13 +54,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user?.id) token.id = user.id;
+    async jwt({ token, user, account }) {
+      if (user?.id) {
+        token.id = user.id;
+        token.sub = user.id;
+      } else if (account && token.email && !token.id) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: token.email },
+          select: { id: true },
+        });
+        if (dbUser) {
+          token.id = dbUser.id;
+          token.sub = dbUser.id;
+        }
+      }
       return token;
     },
     async session({ session, token }) {
-      if (session.user && token.id) {
-        session.user.id = token.id as string;
+      if (session.user) {
+        const userId = (token.id ?? token.sub) as string | undefined;
+        if (userId) session.user.id = userId;
       }
       return session;
     },
