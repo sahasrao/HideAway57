@@ -48,8 +48,14 @@ if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   secret: process.env.AUTH_SECRET,
+  debug: process.env.AUTH_DEBUG === "true",
   adapter: PrismaAdapter(prisma),
   providers,
+  events: {
+    async signIn({ user, account }) {
+      console.info("[auth] signIn", user.email, account?.provider);
+    },
+  },
   callbacks: {
     authorized: authConfig.callbacks?.authorized,
     async jwt({ token, user, profile }) {

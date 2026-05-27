@@ -10,7 +10,7 @@ const AUTH_ERROR_MESSAGES: Record<string, string> = {
   OAuthAccountNotLinked:
     "This email is already registered with a password. Sign in with email and password instead.",
   Configuration:
-    "Server auth is misconfigured. On Render, verify AUTH_SECRET, AUTH_URL, NEXTAUTH_URL, AUTH_GOOGLE_ID, and AUTH_GOOGLE_SECRET are set correctly.",
+    "Server auth is misconfigured on Render. Open /api/auth/health to see what is missing, then set AUTH_SECRET, AUTH_URL, NEXTAUTH_URL, AUTH_GOOGLE_ID, and AUTH_GOOGLE_SECRET in the Render dashboard.",
   AccessDenied:
     "Access was denied. If the app is in testing mode, your Google account must be added as a test user.",
   Verification: "The sign-in link is no longer valid.",

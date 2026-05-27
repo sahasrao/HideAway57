@@ -1,7 +1,10 @@
 import NextAuth from "next-auth";
 import { authConfig } from "@/auth.config";
 
-export const { auth: middleware } = NextAuth(authConfig);
+const { auth: middleware } = NextAuth({
+  ...authConfig,
+  secret: process.env.AUTH_SECRET,
+});
 
 export default middleware;
 
