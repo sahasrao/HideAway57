@@ -7,7 +7,12 @@ import type { Game } from "@/types/game";
 import { formatPrice } from "@/lib/pricing";
 import { useStore } from "@/context/StoreContext";
 
-export function GameActions({ game }: { game: Game }) {
+type GameActionsProps = {
+  game: Game;
+  layout?: "default" | "detail";
+};
+
+export function GameActions({ game, layout = "default" }: GameActionsProps) {
   const router = useRouter();
   const { status } = useSession();
   const { addToCart, isInCart, cart } = useStore();
@@ -17,6 +22,31 @@ export function GameActions({ game }: { game: Game }) {
     if (!inCart) await addToCart(game);
     if (status === "authenticated") router.push("/checkout");
     else router.push(`/login?callbackUrl=${encodeURIComponent("/checkout")}`);
+  }
+
+  if (layout === "detail") {
+    return (
+      <div className="flex w-full shrink-0 flex-col items-stretch gap-3 sm:w-auto sm:min-w-[160px]">
+        <button
+          type="button"
+          onClick={() => addToCart(game)}
+          className="game-detail-btn"
+        >
+          {inCart ? "Add Another" : "Add to Cart"}
+        </button>
+        <button type="button" onClick={handleBuyNow} className="game-detail-btn">
+          Buy Game
+        </button>
+        {inCart && (
+          <Link
+            href="/cart"
+            className="text-center text-xs text-[var(--teal)] hover:underline"
+          >
+            In cart ({cart.find((i) => i.game.id === game.id)?.quantity ?? 1}) →
+          </Link>
+        )}
+      </div>
+    );
   }
 
   return (

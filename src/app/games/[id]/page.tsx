@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { Game } from "@/types/game";
-import { GameCover } from "@/components/GameCover";
 import { GameActions } from "@/components/GameActions";
+import { getFeaturedCardImage } from "@/lib/game-assets";
+import { formatPrice } from "@/lib/pricing";
 
 export default function GameDetailPage() {
   const params = useParams();
@@ -35,44 +37,40 @@ export default function GameDetailPage() {
     );
   }
 
-  const published = new Date(game.publishedDate).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
   return (
-    <div className="max-w-4xl">
+    <div className="mx-auto max-w-3xl">
       <Link href="/" className="text-sm text-[var(--teal)] hover:underline">
         ← Back to games
       </Link>
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-2">
-        <GameCover game={game} className="aspect-square rounded-lg border border-[#3a3a3a]" showTitle />
-
-        <div>
-          <p className="text-sm font-bold uppercase text-[var(--pink)]">{game.genre}</p>
-          <h1 className="mt-2 text-xl font-black uppercase text-white sm:text-2xl">{game.title}</h1>
-          <div className="mt-6">
-            <GameActions game={game} />
-          </div>
-          <p className="mt-6 leading-relaxed text-[var(--muted)]">{game.concept}</p>
-          <dl className="mt-6 grid gap-3 text-sm sm:grid-cols-2">
-            <div className="panel p-3">
-              <dt className="text-[var(--muted)]">Publisher</dt>
-              <dd className="font-semibold text-white">{game.publisher}</dd>
-            </div>
-            <div className="panel p-3">
-              <dt className="text-[var(--muted)]">Released</dt>
-              <dd className="font-semibold text-white">{published}</dd>
-            </div>
-            <div className="panel p-3 sm:col-span-2">
-              <dt className="text-[var(--muted)]">Platforms</dt>
-              <dd className="font-semibold text-white">{game.platforms.join(", ")}</dd>
-            </div>
-          </dl>
+      <article className="mt-4 overflow-hidden rounded-[10px] border border-[#3a3a3a] shadow-[0_4px_12px_rgba(0,0,0,0.35)]">
+        <div className="relative aspect-[415/294] w-full bg-[#141414]">
+          <Image
+            src={getFeaturedCardImage(game.id)}
+            alt={game.title}
+            fill
+            className="object-cover object-center"
+            priority
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
         </div>
-      </div>
+
+        <div className="flex flex-col gap-6 bg-[var(--panel)] p-6 sm:flex-row sm:items-start sm:justify-between sm:gap-8 sm:p-8">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg font-black uppercase leading-tight text-white sm:text-xl">
+              {game.title}
+            </h1>
+            <p className="mt-2 text-2xl font-bold text-white">
+              {formatPrice(game.price)}
+            </p>
+            <p className="mt-4 text-sm leading-relaxed text-white/90 sm:text-base">
+              {game.concept}
+            </p>
+          </div>
+
+          <GameActions game={game} layout="detail" />
+        </div>
+      </article>
     </div>
   );
 }

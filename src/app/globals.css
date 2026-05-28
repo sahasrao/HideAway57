@@ -82,6 +82,26 @@ textarea {
   background: var(--teal-dark);
 }
 
+.game-detail-btn {
+  background: var(--teal);
+  color: #0a0a0a;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 3px 0 var(--teal-dark);
+  transition: background 0.15s, transform 0.1s;
+}
+
+.game-detail-btn:hover {
+  background: var(--teal-dark);
+}
+
+.game-detail-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 var(--teal-dark);
+}
+
 .panel {
   background: var(--panel);
   border-radius: 0.5rem;
