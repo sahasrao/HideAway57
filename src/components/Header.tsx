@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { FormEvent, useState, useEffect } from "react";
 
 export function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
@@ -52,15 +52,6 @@ export function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
       </form>
 
       <div className="flex shrink-0 items-center gap-2">
-        {status === "authenticated" && (
-          <button
-            type="button"
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="rounded-md border border-[#555] px-2 py-2 text-xs font-semibold text-white transition-colors hover:border-red-400 hover:text-red-400 sm:px-3 sm:text-sm"
-          >
-            Log out
-          </button>
-        )}
         <Link
           href={status === "authenticated" ? "/profile" : "/login"}
           className="flex items-center gap-2 rounded-md border-2 border-[var(--teal)] px-3 py-2 text-sm font-semibold text-[var(--teal)] transition-colors hover:bg-[var(--teal)]/10 sm:px-4"
