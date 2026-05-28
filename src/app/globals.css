@@ -54,6 +54,14 @@ textarea {
   white-space: nowrap;
 }
 
+.nav-link {
+  font-family: var(--font-encode-sans), var(--font-geist-sans), sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
 .banner-text {
   font-weight: 800;
   letter-spacing: 0.12em;

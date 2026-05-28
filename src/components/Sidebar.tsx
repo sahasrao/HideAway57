@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Logo } from "./Logo";
 
 const navItems = [
@@ -60,7 +60,7 @@ export function Sidebar({
             </svg>
           </button>
         </div>
-        <nav className="mt-10 flex flex-col gap-2">
+        <nav className="mt-12 flex flex-col gap-6">
           {navItems.map((item) => {
             const active =
               item.href === "/"
@@ -71,8 +71,8 @@ export function Sidebar({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-semibold transition-colors ${
-                  active ? "text-[var(--teal)]" : "text-[var(--teal)]/80 hover:text-[var(--teal)]"
+                className={`nav-link flex items-center gap-4 rounded-md px-3 py-1 transition-colors ${
+                  active ? "text-[var(--teal)]" : "text-[var(--teal)]/85 hover:text-[var(--teal)]"
                 }`}
               >
                 <Icon />
@@ -82,11 +82,11 @@ export function Sidebar({
           })}
         </nav>
         {status === "authenticated" && (
-          <div className="mt-auto border-t border-[#3a3a3a] pt-4">
+          <div className="mt-auto border-t border-[#3a3a3a] pt-6">
             <button
               type="button"
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:bg-red-500/10 hover:text-red-400"
+              className="nav-link flex w-full items-center gap-4 rounded-md px-3 py-1 text-white/80 transition-colors hover:bg-red-500/10 hover:text-red-400"
             >
               <LogoutIcon />
               Log out
@@ -98,34 +98,66 @@ export function Sidebar({
   );
 }
 
+function NavIcon({ children }: { children: ReactNode }) {
+  return (
+    <svg
+      className="h-7 w-7 shrink-0"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.25}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      {children}
+    </svg>
+  );
+}
+
 function GamesIcon() {
   return (
-    <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M21.58 16.09l-1.09-7.66C20.21 6.46 18.52 5 16.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 5 19h14c1.61 0 2.8-1.37 2.58-2.91zM11 11H9v2H8v-2H6v-1h2V8h1v2h2v1zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm2.5-3c-.83 0-1.5-.67-1.5-1.5S17.17 8 18 8s1.5.67 1.5 1.5S18.83 11 18 11z" />
-    </svg>
+    <NavIcon>
+      <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59C2.157 9.425 2 10.855 2 12.282 2 17.405 5.633 22 10 22h4c4.367 0 8-4.595 8-9.718 0-1.427-.157-2.857-.702-4.282A4 4 0 0 0 17.32 5z" />
+      <path d="M6 12h4" />
+      <path d="M8 10v4" />
+      <circle cx="14.75" cy="10.75" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="18.25" cy="10.75" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="14.75" cy="14.25" r="1.1" fill="currentColor" stroke="none" />
+      <circle cx="18.25" cy="14.25" r="1.1" fill="currentColor" stroke="none" />
+    </NavIcon>
   );
 }
 
 function LibraryIcon() {
   return (
-    <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M4 6H2v14a2 2 0 002 2h14v-2H4V6zm16-4H8a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2zm0 14H8V4h12v12z" />
-    </svg>
+    <NavIcon>
+      <rect x="3.75" y="7.5" width="3.25" height="11.5" rx="0.75" />
+      <rect x="8.25" y="7.5" width="3.25" height="11.5" rx="0.75" />
+      <g transform="translate(11.5 8.5) rotate(-22)">
+        <rect x="0" y="0" width="3.25" height="11.5" rx="0.75" />
+      </g>
+    </NavIcon>
   );
 }
 
 function CartIcon() {
   return (
-    <svg className="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M7 18a2 2 0 100 4 2 2 0 000-4zM17 18a2 2 0 100 4 2 2 0 000-4zM5 4h-1l-1 2h14l-2 7H8L6 4H5z" />
-    </svg>
+    <NavIcon>
+      <path d="M6 7h13l-1.2 6.5H7.2L6 7z" />
+      <path d="M6 7 5 4H3" />
+      <circle cx="9.5" cy="19" r="1.25" />
+      <circle cx="16.5" cy="19" r="1.25" />
+    </NavIcon>
   );
 }
 
 function LogoutIcon() {
   return (
-    <svg className="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
-    </svg>
+    <NavIcon>
+      <path d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15" />
+      <path d="M18 12H9" />
+      <path d="m21 9-3 3 3 3" />
+    </NavIcon>
   );
 }
