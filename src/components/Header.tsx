@@ -34,7 +34,7 @@ export function Header({ onMenuOpen }: { onMenuOpen: () => void }) {
         </svg>
       </button>
 
-      <form onSubmit={handleSearch} className="min-w-0 flex-1 sm:max-w-md lg:mx-auto">
+      <form onSubmit={handleSearch} className="min-w-0 flex-1">
         <div className="search-bar relative">
           <span className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-[#59a4ac]">
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
