@@ -116,6 +116,10 @@ textarea {
   box-shadow:
     0 4px 14px -2px rgba(89, 164, 172, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.3s ease,
+    transform 0.25s ease;
 }
 
 .search-bar::after {
@@ -129,6 +133,37 @@ textarea {
   background: rgba(89, 164, 172, 0.85);
   box-shadow: 0 0 10px rgba(89, 164, 172, 0.65);
   pointer-events: none;
+  transition:
+    left 0.35s cubic-bezier(0.34, 1.2, 0.64, 1),
+    right 0.35s cubic-bezier(0.34, 1.2, 0.64, 1),
+    height 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.3s ease;
+}
+
+.search-bar:focus-within {
+  border-color: rgba(89, 164, 172, 0.55);
+  box-shadow:
+    0 8px 24px -4px rgba(89, 164, 172, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.search-bar:focus-within::after {
+  left: 3%;
+  right: 3%;
+  height: 3px;
+  background: #6eb8bf;
+  box-shadow: 0 0 18px rgba(89, 164, 172, 0.95);
+}
+
+.search-bar-icon {
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.search-bar:focus-within .search-bar-icon {
+  color: #6eb8bf;
+  transform: translateY(-50%) scale(1.1);
 }
 
 .search-bar-input {
@@ -139,13 +174,32 @@ textarea {
   font-weight: 500;
   color: #59a4ac;
   outline: none;
+  transition: color 0.25s ease;
 }
 
 .search-bar-input::placeholder {
   color: #59a4ac;
   opacity: 1;
+  transition: opacity 0.25s ease;
 }
 
 .search-bar-input:focus {
-  color: #6eb8bf;
+  color: #8ed4da;
+}
+
+.search-bar-input:focus::placeholder {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-bar,
+  .search-bar::after,
+  .search-bar-icon,
+  .search-bar-input {
+    transition: none;
+  }
+
+  .search-bar:focus-within {
+    transform: none;
+  }
 }
