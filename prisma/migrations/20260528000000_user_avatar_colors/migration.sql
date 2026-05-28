@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN "avatarBodyColor" TEXT NOT NULL DEFAULT '#5bc4d4';
+ALTER TABLE "User" ADD COLUMN "avatarAccentColor" TEXT NOT NULL DEFAULT '#4a2563';

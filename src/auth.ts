@@ -58,9 +58,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   callbacks: {
     authorized: authConfig.callbacks?.authorized,
-    async jwt({ token, user, profile }) {
+    async jwt({ token, user, profile, trigger, session }) {
       if (user?.id) {
         token.id = user.id;
+      }
+
+      if (user?.name !== undefined) {
+        token.name = user.name;
       }
 
       const email =
@@ -76,14 +80,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         try {
           const dbUser = await prisma.user.findUnique({
             where: { email },
-            select: { id: true },
+            select: { id: true, name: true },
           });
           if (dbUser) {
             token.id = dbUser.id;
+            if (dbUser.name !== undefined) {
+              token.name = dbUser.name;
+            }
           }
         } catch (error) {
           console.error("[auth] Failed to resolve user id from email:", error);
         }
+      }
+
+      if (trigger === "update" && session?.name !== undefined) {
+        token.name = session.name;
       }
 
       if (token.id) {
@@ -95,6 +106,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id as string;
+        if (token.name !== undefined) {
+          session.user.name = token.name;
+        }
       }
       return session;
     },
