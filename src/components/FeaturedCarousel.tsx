@@ -4,14 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import type { Game } from "@/types/game";
-import { getFeaturedCardImage } from "@/lib/game-assets";
-
-function carouselImage(game: Game) {
-  if (game.id === "froot-shooter") {
-    return "/games/froot-shooter-hero.png";
-  }
-  return getFeaturedCardImage(game.id);
-}
+import { getCarouselImage } from "@/lib/game-assets";
 
 export function FeaturedCarousel({ games }: { games: Game[] }) {
   const [index, setIndex] = useState(0);
@@ -22,14 +15,16 @@ export function FeaturedCarousel({ games }: { games: Game[] }) {
   return (
     <div className="relative overflow-hidden rounded-[10px] border border-[#3a3a3a] bg-[#141414] shadow-[0_4px_12px_rgba(0,0,0,0.35)]">
       <Link href={`/games/${game.id}`} className="block">
-        <div className="relative aspect-[21/9] min-h-[160px] w-full sm:min-h-[220px] lg:min-h-[280px]">
+        <div className="relative aspect-video w-full overflow-hidden">
           <Image
-            src={carouselImage(game)}
+            src={getCarouselImage(game.id)}
             alt={game.title}
             fill
-            className="object-cover"
+            className="h-full w-full"
             priority
-            sizes="100vw"
+            quality={95}
+            unoptimized
+            sizes="(max-width: 1024px) 100vw, min(3840px, calc(100vw - 302px))"
           />
         </div>
       </Link>

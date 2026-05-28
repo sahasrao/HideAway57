@@ -24,7 +24,7 @@ async function fetchImageUrls(token: string, nodeIds: string[]) {
   const params = new URLSearchParams({
     ids: nodeIds.join(","),
     format: "png",
-    scale: "2",
+    scale: "4",
   });
   const res = await fetch(
     `https://api.figma.com/v1/images/${FILE_KEY}?${params}`,
