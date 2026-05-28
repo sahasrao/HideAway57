@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "prisma generate && next build",
-    "build:render": "npm run installers:build && npm run carousel:build && prisma generate && prisma migrate deploy && tsx prisma/seed.ts && next build",
+    "build:render": "npm run installers:build && npm run banners:build && npm run carousel:build && prisma generate && prisma migrate deploy && tsx prisma/seed.ts && next build",
     "start": "next start -p ${PORT:-3000}",
     "lint": "eslint",
     "db:generate": "prisma generate",
@@ -17,6 +17,7 @@
     "covers:figma": "tsx scripts/export-figma-covers.ts",
     "cards:figma": "tsx scripts/export-figma-cards.ts",
     "carousel:build": "tsx scripts/build-carousel-images.ts",
+    "banners:build": "tsx scripts/build-game-banners.ts",
     "logo:figma": "tsx scripts/export-figma-logo.ts",
     "deploy:render:docker": "bash scripts/deploy-render-docker.sh",
     "db:setup": "npm run installers:build && prisma migrate dev && prisma db seed"
